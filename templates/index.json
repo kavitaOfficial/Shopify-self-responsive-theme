@@ -78,6 +78,32 @@
     },
     "image_banner_custom_ihjKDT": {
       "type": "image-banner-custom",
+      "blocks": {
+        "button_AdwVVX": {
+          "type": "button",
+          "settings": {
+            "label": "Shop Now",
+            "button_link": ""
+          }
+        },
+        "text_rWkcz9": {
+          "type": "Text",
+          "settings": {
+            "text": "Lorem ipsum dolor sit amet."
+          }
+        },
+        "heading_QpmFUx": {
+          "type": "heading",
+          "settings": {
+            "heading": "Welcome to Our Store"
+          }
+        }
+      },
+      "block_order": [
+        "button_AdwVVX",
+        "text_rWkcz9",
+        "heading_QpmFUx"
+      ],
       "name": "Custom Image Banner",
       "settings": {}
     }
