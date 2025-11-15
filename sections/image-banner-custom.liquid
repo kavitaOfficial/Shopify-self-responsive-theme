@@ -3,9 +3,11 @@
   <!-- Image(s) placeholder -->
   <div class="custom-banner__media">
     {% if section.settings.banner_image %}
-      {{ section.settings.banner_image | image_tag: widths: '360, 540, 720, 940, 1100, 1500, 2200', sizes: '100vw', alt: section.settings.banner_image.alt | escape }}
-    {% else %}
-      <div class="custom-banner__image--placeholder">No image selected</div>
+        {{ section.settings.banner_image | image_url: width: 2200 | image_tag: 
+            widths: '360, 540, 720, 940, 1100, 1500, 2200',
+            sizes: '100vw',
+            alt: section.settings.banner_image.alt | escape 
+        }}
     {% endif %}
   </div>
 
