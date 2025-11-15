@@ -1,0 +1,30 @@
+<section id="custom-banner-{{ section.id }}" class="custom-banner">
+
+  <!-- Image(s) placeholder -->
+  <div class="custom-banner__media">
+    {% if section.settings.banner_image %}
+      {{ section.settings.banner_image | image_tag: widths: '360, 540, 720, 940, 1100, 1500, 2200', sizes: '100vw', alt: section.settings.banner_image.alt | escape }}
+    {% else %}
+      <div class="custom-banner__image--placeholder">No image selected</div>
+    {% endif %}
+  </div>
+
+  <!-- Text/content placeholder -->
+  <div class="custom-banner__content"></div>
+
+</section>
+
+{% schema %}
+{
+  "name": "Custom Image Banner",
+  "settings": [
+    {
+        "type": "image_picker",
+        "id": "banner_image",
+        "label": "Banner Image"
+    }
+  ],
+  "blocks": [],
+  "presets": [{"name": "Custom Image Banner"}]
+}
+{% endschema %}
