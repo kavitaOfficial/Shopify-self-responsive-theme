@@ -48,65 +48,6 @@
         "show_text_below": false
       }
     },
-    "featured_collection": {
-      "type": "featured-collection",
-      "settings": {
-        "collection": "all",
-        "products_to_show": 8,
-        "title": "Featured products",
-        "heading_size": "h2",
-        "description": "",
-        "show_description": false,
-        "description_style": "body",
-        "columns_desktop": 4,
-        "enable_desktop_slider": false,
-        "full_width": false,
-        "show_view_all": true,
-        "view_all_style": "solid",
-        "color_scheme": "scheme-1",
-        "image_ratio": "adapt",
-        "image_shape": "default",
-        "show_secondary_image": true,
-        "show_vendor": false,
-        "show_rating": false,
-        "quick_add": "none",
-        "columns_mobile": "2",
-        "swipe_on_mobile": false,
-        "padding_top": 44,
-        "padding_bottom": 36
-      }
-    },
-    "image_banner_custom_ihjKDT": {
-      "type": "image-banner-custom",
-      "blocks": {
-        "button_LdGErg": {
-          "type": "button",
-          "settings": {
-            "label": "",
-            "button_link": ""
-          }
-        },
-        "text_EFVCzC": {
-          "type": "Text",
-          "settings": {
-            "text": ""
-          }
-        },
-        "heading_fDWm89": {
-          "type": "heading",
-          "settings": {
-            "heading": ""
-          }
-        }
-      },
-      "block_order": [
-        "button_LdGErg",
-        "text_EFVCzC",
-        "heading_fDWm89"
-      ],
-      "name": "Custom Image Banner",
-      "settings": {}
-    },
     "multicolumn_CQnqUU": {
       "type": "multicolumn",
       "blocks": {
@@ -160,12 +101,16 @@
         "padding_top": 36,
         "padding_bottom": 36
       }
+    },
+    "custom_col_banner_QNr94d": {
+      "type": "custom-col-banner",
+      "name": "Custom Col Banner",
+      "settings": {}
     }
   },
   "order": [
     "image_banner",
-    "featured_collection",
-    "image_banner_custom_ihjKDT",
-    "multicolumn_CQnqUU"
+    "multicolumn_CQnqUU",
+    "custom_col_banner_QNr94d"
   ]
 }
