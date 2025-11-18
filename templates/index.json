@@ -92,7 +92,7 @@
         "image_width": "third",
         "image_ratio": "circle",
         "button_label": "Button label",
-        "button_link": "",
+        "button_link": "shopify://collections",
         "columns_desktop": 2,
         "column_alignment": "left",
         "background_style": "primary",
@@ -112,7 +112,9 @@
             "title": "Get your own interactive virtual forest",
             "text": "<p>Register trees and get your own virtual forest island that will change as you plant.</p>",
             "link_label": "Learn more",
-            "link": ""
+            "link": "",
+            "button_label": "Button label",
+            "button_link": ""
           }
         },
         "column_GLbeCd": {
@@ -121,7 +123,9 @@
             "title": "Get your own interactive virtual forest",
             "text": "<p>Register trees and get your own virtual forest island that will change as you plant.</p>",
             "link_label": "Learn more",
-            "link": ""
+            "link": "",
+            "button_label": "Button label",
+            "button_link": ""
           }
         }
       },
@@ -133,7 +137,7 @@
       "settings": {
         "image_width": "full",
         "image_ratio": "square",
-        "columns_desktop": 3,
+        "columns_desktop": 2,
         "column_alignment": "left",
         "columns_mobile": "1",
         "padding_top": 36,
