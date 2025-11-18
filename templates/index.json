@@ -106,57 +106,33 @@
     "custom_col_banner_QNr94d": {
       "type": "custom-col-banner",
       "blocks": {
-        "column_ekbhj4": {
+        "column_aGxGPL": {
           "type": "column",
           "settings": {
-            "image": "shopify://shop_images/logo.png",
-            "title": "Column",
-            "text": "<p>Pair text with an image to focus on your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.</p>",
-            "link_label": "",
+            "title": "Get your own interactive virtual forest",
+            "text": "<p>Register trees and get your own virtual forest island that will change as you plant.</p>",
+            "link_label": "Learn more",
             "link": ""
           }
         },
-        "column_L9w6fe": {
+        "column_GLbeCd": {
           "type": "column",
           "settings": {
-            "image": "shopify://shop_images/woman-poses-in-dark-room.jpg",
-            "title": "Column",
-            "text": "<p>Pair text with an image to focus on your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.</p>",
-            "link_label": "",
-            "link": ""
-          }
-        },
-        "column_Tp3mCY": {
-          "type": "column",
-          "settings": {
-            "image": "shopify://shop_images/rack-of-womens-clothing.jpg",
-            "title": "Column",
-            "text": "<p>Pair text with an image to focus on your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.</p>",
-            "link_label": "",
-            "link": ""
-          }
-        },
-        "column_qPbRaG": {
-          "type": "column",
-          "settings": {
-            "image": "shopify://shop_images/Hero_image1.jpg",
-            "title": "Column",
-            "text": "<p>Pair text with an image to focus on your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.</p>",
-            "link_label": "",
+            "title": "Get your own interactive virtual forest",
+            "text": "<p>Register trees and get your own virtual forest island that will change as you plant.</p>",
+            "link_label": "Learn more",
             "link": ""
           }
         }
       },
       "block_order": [
-        "column_ekbhj4",
-        "column_L9w6fe",
-        "column_Tp3mCY",
-        "column_qPbRaG"
+        "column_aGxGPL",
+        "column_GLbeCd"
       ],
       "name": "Custom Col Banner",
       "settings": {
         "image_width": "full",
-        "image_ratio": "adapt",
+        "image_ratio": "square",
         "columns_desktop": 3,
         "column_alignment": "left",
         "columns_mobile": "1",
