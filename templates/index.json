@@ -92,7 +92,7 @@
         "image_width": "third",
         "image_ratio": "circle",
         "button_label": "Button label",
-        "button_link": "",
+        "button_link": "shopify://collections",
         "columns_desktop": 2,
         "column_alignment": "left",
         "background_style": "primary",
