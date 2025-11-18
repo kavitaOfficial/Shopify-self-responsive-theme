@@ -62,6 +62,7 @@
                     </div>
                     {%- endif -%}
             </div>
+            <div></div>
         </li> 
         {%- endfor -%}          
         </ul>
@@ -213,7 +214,23 @@
           "type": "url",
           "id": "link",
           "label": "t:sections.multicolumn.blocks.column.settings.link.label"
-        }
+        },
+        {
+          "type": "header",
+          "content": "t:sections.multicolumn.settings.header_button.content"
+        },    
+        {
+          "type": "text",
+          "id": "button_label",
+          "default": "t:sections.multicolumn.settings.button_label.default",
+          "label": "t:sections.multicolumn.settings.button_label.label", 
+          "info": "t:sections.multicolumn.settings.button_label.info"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "t:sections.multicolumn.settings.button_link.label"
+        }        
       ]
     }
   ],
