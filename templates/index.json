@@ -114,10 +114,20 @@
             "link_label": "Learn more",
             "link": ""
           }
+        },
+        "column_GLbeCd": {
+          "type": "column",
+          "settings": {
+            "title": "Get your own interactive virtual forest",
+            "text": "<p>Register trees and get your own virtual forest island that will change as you plant.</p>",
+            "link_label": "Learn more",
+            "link": ""
+          }
         }
       },
       "block_order": [
-        "column_aGxGPL"
+        "column_aGxGPL",
+        "column_GLbeCd"
       ],
       "name": "Custom Col Banner",
       "settings": {
