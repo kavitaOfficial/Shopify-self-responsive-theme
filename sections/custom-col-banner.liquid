@@ -15,7 +15,16 @@
   <div class="page-width section-{{ section.id }}-padding">
     <ul class="grid grid--{{ section.settings.columns_mobile }}-col-tablet-down grid--{{ section.settings.columns_desktop }}-col-desktop">
       <li class="grid__item {% if section.settings.column_alignment == 'center' %} center{% endif %}">
-        <div>
+
+        <div class="custom-col-banner-content">
+          <div>
+            <h3 class="custom-col-banner-title">Get your own interactive virtual forest</h3>
+            <div class="custom-col-banner-text rte">
+              <p>Register trees and get your own virtual forest island that will change as you plant.</p>
+            </div>
+            <a href="/collections" class="custom-col-banner-link">Learn more</a>
+          </div>
+          <div>
           <svg viewBox="0 0 239.6 264.3" version="1.1" xmlns="http://www.w3.org/2000/svg" id="Layer_2">
             <defs>
               <style>
@@ -38,15 +47,7 @@
             </g>
           </svg>
           <div class="media media--transparent media--{{ section.settings.image_ratio }}" {% if section.settings.image_ratio == 'adapt' %} style="padding-bottom: {{ 1 | divided_by: highest_ratio | times: 100 }}%;" {% endif %}></div>
-        </div>
-        <div class="custom-col-banner-content">
-          <div>
-            <h3 class="custom-col-banner-title">Get your own interactive virtual forest</h3>
-            <div class="custom-col-banner-text rte">
-              <p>Register trees and get your own virtual forest island that will change as you plant.</p>
-            </div>
-            <a href="/collections" class="custom-col-banner-link">Learn more</a>
-          </div>
+        </div>        
         </div>
       </li>
       <li class="grid__item {% if section.settings.column_alignment == 'center' %} center{% endif %}">
