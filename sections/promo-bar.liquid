@@ -1,3 +1,33 @@
+<style>
+.promo-bar {
+  width: 100%;
+  background: rgb(var(--color-background));
+  color: rgb(var(--color-foreground));
+  font-size: var(--font-size-body);
+}
+
+.promo-bar__item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.8rem 1.2rem;
+  text-align: center;
+}
+.promo-bar__text,
+.promo-bar__link {
+  font-size: inherit;
+  color: inherit;
+  line-height: 1.4;
+}
+.promo-bar__link {
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+
+</style>
+
+
 {% if section.settings.show_on_page and section.blocks.size > 0 %}
   <div
     class="promo-bar"
