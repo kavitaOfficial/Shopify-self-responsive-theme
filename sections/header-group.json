@@ -11,6 +11,25 @@
   "name": "t:sections.header.name",
   "type": "header",
   "sections": {
+    "promo_bar_x3DQCq": {
+      "type": "promo-bar",
+      "blocks": {
+        "text_bGXbx7": {
+          "type": "text",
+          "settings": {
+            "promo_text": "Free shipping on orders over $50!",
+            "promo_link": ""
+          }
+        }
+      },
+      "block_order": [
+        "text_bGXbx7"
+      ],
+      "name": "Promo Bar",
+      "settings": {
+        "show_on_page": true
+      }
+    },
     "announcement-bar": {
       "type": "announcement-bar",
       "blocks": {
@@ -25,6 +44,7 @@
       "block_order": [
         "announcement-bar-0"
       ],
+      "disabled": true,
       "settings": {
         "auto_rotate": false,
         "change_slides_speed": 5,
@@ -56,6 +76,7 @@
     }
   },
   "order": [
+    "promo_bar_x3DQCq",
     "announcement-bar",
     "header"
   ]
