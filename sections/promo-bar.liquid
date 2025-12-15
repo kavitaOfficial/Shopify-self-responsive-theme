@@ -11,6 +11,20 @@
             </span>
         {% endif %}
         </div>
+    {%- elsif section.blocks.size > 1 -%}    
+        {%- for block in section.blocks -%} 
+                 <div class="promo-bar__item">
+                    {% if section.blocks.settings.promo_link != blank %}
+                        <a href="{{ section.blocks.settings.promo_link }}" class="promo-bar__link">
+                        {{ section.blocks.settings.promo_text }}
+                        </a>
+                    {% else %}
+                        <span class="promo-bar__text">
+                        {{ section.blocks.settings.promo_text }}
+                        </span>
+                    {% endif %}
+                </div>
+            {%- endfor -%}   
     {% endif %}
 {% endif %}  
 {% schema %}
