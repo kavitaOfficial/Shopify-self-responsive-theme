@@ -12,6 +12,7 @@
   align-items: center;
   padding: 0.8rem 1.2rem;
   text-align: center;
+  transition: opacity 0.3s ease;
 }
 .promo-bar__text,
 .promo-bar__link {
@@ -22,6 +23,17 @@
 .promo-bar__link {
   text-decoration: underline;
   text-underline-offset: 0.2em;
+}
+@media screen and (min-width: 750px) {
+  .promo-bar__item {
+    padding: 1rem 2rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .promo-bar {
+    transition: none;
+  }
 }
 
 
