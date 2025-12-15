@@ -14,6 +14,13 @@
     "promo_bar_x3DQCq": {
       "type": "promo-bar",
       "blocks": {
+        "text_rN7LDM": {
+          "type": "text",
+          "settings": {
+            "promo_text": "Free shipping on orders over $50!cxzczsdfds",
+            "promo_link": ""
+          }
+        },
         "text_bGXbx7": {
           "type": "text",
           "settings": {
@@ -23,6 +30,7 @@
         }
       },
       "block_order": [
+        "text_rN7LDM",
         "text_bGXbx7"
       ],
       "name": "Promo Bar",
