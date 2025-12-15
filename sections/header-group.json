@@ -16,6 +16,7 @@
       "blocks": {
         "text_rN7LDM": {
           "type": "text",
+          "disabled": true,
           "settings": {
             "promo_text": "",
             "promo_link": ""
@@ -41,6 +42,13 @@
     "announcement-bar": {
       "type": "announcement-bar",
       "blocks": {
+        "announcement_aGy6ez": {
+          "type": "announcement",
+          "settings": {
+            "text": "Browse our latest products?Browse our latest products?",
+            "link": ""
+          }
+        },
         "announcement-bar-0": {
           "type": "announcement",
           "settings": {
@@ -50,9 +58,9 @@
         }
       },
       "block_order": [
+        "announcement_aGy6ez",
         "announcement-bar-0"
       ],
-      "disabled": true,
       "settings": {
         "auto_rotate": false,
         "change_slides_speed": 5,
