@@ -1,32 +1,38 @@
-{% if section.settings.show_on_page  %}
-    {%- if section.blocks.size == 1  -%}
-        <div class="promo-bar__item">
-        {% if section.blocks.first.settings.promo_link != blank %}
-            <a href="{{ section.blocks.first.settings.promo_link }}" class="promo-bar__link">
-            {{ section.blocks.first.settings.promo_text }}
-            </a>
-        {% else %}
-            <span class="promo-bar__text">
-            {{ section.blocks.first.settings.promo_text }}
-            </span>
-        {% endif %}
-        </div>
-    {%- elsif section.blocks.size > 1 -%}    
-        {%- for block in section.blocks -%} 
-                 <div class="promo-bar__item">
-                    {% if section.blocks.settings.promo_link != blank %}
-                        <a href="{{ section.blocks.settings.promo_link }}" class="promo-bar__link">
-                        {{ section.blocks.settings.promo_text }}
-                        </a>
-                    {% else %}
-                        <span class="promo-bar__text">
-                        {{ section.blocks.settings.promo_text }}
-                        </span>
-                    {% endif %}
-                </div>
-            {%- endfor -%}   
+{% if section.settings.show_on_page and section.blocks.size > 0 %}
+  <div
+    class="promo-bar"
+    {% if section.blocks.size > 1 %}
+      data-rotate="true"
+      data-interval="3000"
     {% endif %}
-{% endif %}  
+    role="region"
+    aria-label="Promotional messages"
+  >
+    {% for block in section.blocks %}
+      <div
+        class="promo-bar__item"
+        {% if forloop.index != 1 %}
+          hidden
+        {% endif %}
+        {{ block.shopify_attributes }}
+      >
+        {% if block.settings.promo_link != blank %}
+          <a
+            href="{{ block.settings.promo_link }}"
+            class="promo-bar__link"
+          >
+            {{ block.settings.promo_text }}
+          </a>
+        {% else %}
+          <span class="promo-bar__text">
+            {{ block.settings.promo_text }}
+          </span>
+        {% endif %}
+      </div>
+    {% endfor %}
+  </div>
+{% endif %}
+ 
 {% schema %}
 {
   "name": "promo-bar",
