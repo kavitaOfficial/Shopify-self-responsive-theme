@@ -1,0 +1,54 @@
+{% if section.settings.show_on_page  %}
+    {%- if section.blocks.size == 1  -%}
+        <div class="promo-bar__item">
+        {% if section.blocks.first.settings.promo_link != blank %}
+            <a href="{{ section.blocks.first.settings.promo_link }}" class="promo-bar__link">
+            {{ section.blocks.first.settings.promo_text }}
+            </a>
+        {% else %}
+            <span class="promo-bar__text">
+            {{ section.blocks.first.settings.promo_text }}
+            </span>
+        {% endif %}
+        </div>
+    {% endif %}
+{% endif %}  
+{% schema %}
+{
+  "name": "promo-bar",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_on_page",
+      "label": "Show on page",
+      "default": true
+    }
+  ],
+   "blocks": [
+    {
+      "type": "text",
+      "name": "Promo Text",
+      "settings": [
+        {
+          "type": "text",
+          "id": "promo_text",
+          "label": "Promo Text"
+        },
+        {
+          "type": "url",
+          "id": "promo_link",
+          "label": "Promo Link"
+        }
+      ]
+    }
+   ],
+   "presets": [
+    {
+      "name": "Promo Bar",
+      "category": "Announcement"
+    }
+   ]
+}
+{% endschema %}
