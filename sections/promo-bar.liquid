@@ -1,6 +1,3 @@
-{{ 'component-slideshow.css' | asset_url | stylesheet_tag }}
-{{ 'component-slider.css' | asset_url | stylesheet_tag }}
-
 <style>
 .promo-bar {
   width: 100%;
@@ -23,44 +20,6 @@
   text-decoration: underline;
   text-underline-offset: 0.2em;
 }
-
-.announcement-bar .slider--everywhere,.promo-bar .slider--everywhere {
-  margin-bottom: 0;
-  scroll-behavior: auto;
-}
-
-.utility-bar__grid .announcement-bar-slider {
-  width: 100%;
-}
-
-.utility-bar__grid .announcement-bar-slider {
-  width: 100%;
-}
-
-.announcement-bar-slider,
-.announcement-bar-slider .slider,.promo-bar .slider {
-  width: 100%;
-}
-
-.announcement-bar .slider-button--next,.promo-bar .slider-button--next {
-  margin-right: -1.5rem;
-  min-width: 44px;
-}
-
-.announcement-bar .slider-button--prev,.promo-bar .slider-button--prev {
-  margin-left: -1.5rem;
-  min-width: 44px;
-}
-
-.announcement-bar .slider-button--next:focus-visible,
-.announcement-bar .slider-button--prev:focus-visible,
-.utility-bar .list-social__link:focus-visible , .promo-bar .slider-button--next:focus-visible,
-.promo-bar .slider-button--prev:focus-visible {
-  outline-offset: -0.3rem;
-  box-shadow: 0 0 0 -0.2rem rgb(var(--color-foreground));
-}
-
-
 @media screen and (min-width: 750px) {
   .promo-bar__item {
     padding: 1rem 2rem;
@@ -73,73 +32,40 @@
   }
 }
 </style>
-<slideshow-component  class="promo-bar" role="region" aria-roledescription="{{ 'sections.promos.carousel' | t }}"  aria-label="{{ 'sections.promos.promo_bar' | t }}">
-    <div class="promo-bar-slider slider-buttons">
-    <button type="button" class="slider-button slider-button--prev" name="previous" aria-label="{{ 'sections.promos.previous_promo' | t }}" aria-controls="Slider-{{ section.id }}" >
-            <span class="svg-wrapper">
-              {{- 'icon-caret.svg' | inline_asset_content -}}
-            </span>
-          </button>
-          <div class="grid grid--1-col slider slider--everywhere" id="Slider-{{ section.id }}" aria-live="polite" aria-atomic="true" data-autoplay="{{ section.settings.auto_rotate }}" data-speed="{{ section.settings.change_slides_speed }}">
-            {%- for block in section.blocks -%}
-              <div
-                class="slideshow__slide slider__slide grid__item grid--1-col"
-                id="Slide-{{ section.id }}-{{ forloop.index }}"
-                {{ block.shopify_attributes }}
-                role="group"
-                aria-roledescription="{{ 'sections.promos.promo' | t }}"
-                aria-label="{{ forloop.index }} {{ 'general.slider.of' | t }} {{ forloop.length }}"
-                tabindex="-1"
-              >
-                <div
-                  class="promo-bar__promo"
-                  role="region"
-                  aria-label="{{ 'sections.header.promo' | t }}"
-                >
-                  {%- if block.settings.text != blank -%}
-                    {%- if block.settings.link != blank -%}
-                      <a
-                        href="{{ block.settings.link }}"
-                        class="promo-bar__link link link--text focus-inset animate-arrow"
-                      >
-                    {%- endif -%}
-                    <p class="promo-bar__message h5">
-                      <span>{{ block.settings.text | escape }}</span>
-                      {%- if block.settings.link != blank -%}
-                        {{- 'icon-arrow.svg' | inline_asset_content -}}
-                      {%- endif -%}
-                    </p>
-                    {%- if block.settings.link != blank -%}
-                      </a>
-                    {%- endif -%}
-                  {%- endif -%}
-                </div>
-              </div>
-            {%- endfor -%}
-          </div>
-          <button
-            type="button"
-            class="slider-button slider-button--next"
-            name="next"
-            aria-label="{{ 'sections.promos.next_promo' | t }}"
-            aria-controls="Slider-{{ section.id }}"
+{% if section.settings.show_on_page and section.blocks.size > 0 %}
+  <div
+    class="promo-bar"
+    {% if section.blocks.size > 1 %}
+      data-rotate="true"
+      data-interval="3000"
+    {% endif %}
+    role="region"
+    aria-label="Promotional messages"
+  >
+    {% for block in section.blocks %}
+      <div
+        class="promo-bar__item"
+        {% if forloop.index != 1 %}
+          hidden
+        {% endif %}
+        {{ block.shopify_attributes }}
+      >
+        {% if block.settings.promo_link != blank %}
+          <a
+            href="{{ block.settings.promo_link }}"
+            class="promo-bar__link"
           >
-            <span class="svg-wrapper">
-              {{- 'icon-caret.svg' | inline_asset_content -}}
-            </span>
-          </button>
-        </div>
-</slideshow-component>
-{%- if request.design_mode -%}
-        <script src="{{ 'theme-editor.js' | asset_url }}" defer="defer"></script>
-        <style>
-          /* theme editor power preview fix */
-          .announcement-bar-slider .slider__slide[aria-hidden='true'] {
-            visibility: hidden;
-          }
-        </style>
-      {%- endif -%}
-
+            {{ block.settings.promo_text }}
+          </a>
+        {% else %}
+          <span class="promo-bar__text">
+            {{ block.settings.promo_text }}
+          </span>
+        {% endif %}
+      </div>
+    {% endfor %}
+  </div>
+{% endif %}
  <script src="{{ 'promo-bar.js' | asset_url }}" defer="defer"></script>
 {% schema %}
 {
