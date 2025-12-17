@@ -16,9 +16,8 @@
       "blocks": {
         "text_rN7LDM": {
           "type": "text",
-          "disabled": true,
           "settings": {
-            "promo_text": "",
+            "promo_text": "Free shipping on orders 100",
             "promo_link": ""
           }
         },
