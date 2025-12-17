@@ -1,4 +1,7 @@
-<style>
+{{ 'component-slideshow.css' | asset_url | stylesheet_tag }}
+{{ 'component-slider.css' | asset_url | stylesheet_tag }}
+
+{% comment %} <style>
 .promo-bar {
   width: 100%;
   background: rgb(var(--color-background));
@@ -31,7 +34,7 @@
     transition: none;
   }
 }
-</style>
+</style> {% endcomment %}
 <slideshow-component  class="announcement-bar" role="region" aria-roledescription="{{ 'sections.promos.carousel' | t }}"  aria-label="{{ 'sections.promos.promo_bar' | t }}">
     <div class="announcement-bar-slider slider-buttons">
     <button type="button" class="slider-button slider-button--prev" name="previous" aria-label="{{ 'sections.promos.previous_promo' | t }}" aria-controls="Slider-{{ section.id }}" >
