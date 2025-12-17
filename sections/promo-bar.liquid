@@ -1,147 +1,120 @@
-{{ 'component-slideshow.css' | asset_url | stylesheet_tag }}
-{{ 'component-slider.css' | asset_url | stylesheet_tag }}
-
-{% comment %} <style>
-.promo-bar {
-  width: 100%;
+<style>
+  .u-announcement {
+  position: relative;
+  overflow: hidden;
   background: rgb(var(--color-background));
   color: rgb(var(--color-foreground));
-  font-size: var(--font-size-body);
 }
-.promo-bar__item {
-  padding: 0.8rem 1.2rem;
+
+.u-slider-track {
+  display: flex;
+  transition: transform 0.4s ease;
+  will-change: transform;
+}
+
+.u-slide {
+  min-width: 100%;
   text-align: center;
-  transition: opacity 0.3s ease;
-}
-.promo-bar__text,
-.promo-bar__link {
-  font-size: inherit;
-  color: inherit;
-  line-height: 1.4;
-}
-.promo-bar__link {
-  text-decoration: underline;
-  text-underline-offset: 0.2em;
-}
-@media screen and (min-width: 750px) {
-  .promo-bar__item {
-    padding: 1rem 2rem;
-  }
+  padding: 1rem;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .promo-bar {
-    transition: none;
-  }
+.u-slider-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  font-size: 2rem;
+  cursor: pointer;
 }
-</style> {% endcomment %}
-<slideshow-component class="announcement-bar" role="region">
-  <div class="announcement-bar-slider slider-buttons">
-    <button class="slider-button slider-button--prev" name="previous">
-      <span class="svg-wrapper">
-        {{ 'icon-caret.svg' | inline_asset_content }}
-      </span>
-    </button>
 
-    <div
-      class="grid grid--1-col slider slider--everywhere"
-      id="Slider-{{ section.id }}"
-      data-autoplay="{{ section.settings.auto_rotate }}"
-      data-speed="{{ section.settings.change_slides_speed }}"
-    >
-      {% for block in section.blocks %}
-  <div
-  class="slideshow__slide slider__slide grid__item grid--1-col"
-  {% if forloop.first %}
-    aria-hidden="false"
-  {% else %}
-    aria-hidden="true"
-    tabindex="-1"
-  {% endif %}
+.u-slider-btn.prev { left: 0.5rem; }
+.u-slider-btn.next { right: 0.5rem; }
+
+</style>
+
+<div
+  class="u-announcement"
+  data-slider
+  data-autoplay="{{ section.settings.autoplay }}"
+  data-interval="{{ section.settings.interval | times: 1000 }}"
 >
 
-          {% if block.settings.promo_text != blank %}
-  <p class="announcement-bar__message h5">
-    <span>{{ block.settings.promo_text }}</span>
-  </p>
-{% endif %}
-        </div>
-      {% endfor %}
-    </div>
+  <button class="u-slider-btn prev" type="button" aria-label="Previous">
+    ‹
+  </button>
 
-    <button class="slider-button slider-button--next" name="next">
-      <span class="svg-wrapper">
-        {{ 'icon-caret.svg' | inline_asset_content }}
-      </span>
-    </button>
+  <div class="u-slider-track">
+    {% for block in section.blocks %}
+      <div
+        class="u-slide"
+        data-slide
+        data-block-id="{{ block.id }}"
+        {{ block.shopify_attributes }}
+      >
+        {% if block.settings.link != blank %}
+          <a href="{{ block.settings.link }}">
+        {% endif %}
+
+          <p>{{ block.settings.text }}</p>
+
+        {% if block.settings.link != blank %}
+          </a>
+        {% endif %}
+      </div>
+    {% endfor %}
   </div>
-</slideshow-component>
 
+  <button class="u-slider-btn next" type="button" aria-label="Next">
+    ›
+  </button>
 
+</div>
 
- {%- if request.design_mode -%}
-        <script src="{{ 'theme-editor.js' | asset_url }}" defer="defer"></script>
-        <style>
-          /* theme editor power preview fix */
-          .announcement-bar-slider .slider__slide[aria-hidden='true'] {
-            visibility: hidden;
-          }
-        </style>
-      {%- endif -%}
- {% comment %} <script src="{{ 'promo-bar.js' | asset_url }}" defer="defer"></script> {% endcomment %}
 {% schema %}
 {
-  "name": "promo-bar",
-  "tag": "section",
-  "class": "section",
+  "name": "U_Announcement Slider",
   "settings": [
     {
       "type": "checkbox",
-      "id": "show_on_page",
-      "label": "Show on page",
+      "id": "autoplay",
+      "label": "Autoplay",
       "default": true
     },
     {
-  "type": "checkbox",
-  "id": "auto_rotate",
-  "label": "Auto rotate",
-  "default": false
-},
-{
-  "type": "range",
-  "id": "change_slides_speed",
-  "min": 3,
-  "max": 10,
-  "step": 1,
-  "unit": "s",
-  "label": "Change slides speed",
-  "default": 5
-}
-
+      "type": "range",
+      "id": "interval",
+      "label": "Autoplay interval",
+      "min": 3,
+      "max": 10,
+      "step": 1,
+      "unit": "s",
+      "default": 5
+    }
   ],
-   "blocks": [
+  "blocks": [
     {
-      "type": "text",
-      "name": "Promo Text",
+      "type": "announcement",
+      "name": "Announcement",
       "settings": [
         {
           "type": "text",
-          "id": "promo_text",
-          "label": "Promo Text"
+          "id": "text",
+          "label": "Text"
         },
         {
           "type": "url",
-          "id": "promo_link",
-          "label": "Promo Link"
+          "id": "link",
+          "label": "Link"
         }
       ]
     }
-   ],
-   "presets": [
+  ],
+  "presets": [
     {
-      "name": "Promo Bar",
-      "category": "Announcement"
+      "name": "Universal Announcement Slider",
+      "blocks": [{ "type": "announcement" }]
     }
-   ]
+  ]
 }
 {% endschema %}
