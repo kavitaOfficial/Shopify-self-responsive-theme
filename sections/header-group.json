@@ -11,33 +11,6 @@
   "name": "t:sections.header.name",
   "type": "header",
   "sections": {
-    "promo_bar_x3DQCq": {
-      "type": "promo-bar",
-      "blocks": {
-        "text_rN7LDM": {
-          "type": "text",
-          "settings": {
-            "promo_text": "Free shipping on orders 100",
-            "promo_link": ""
-          }
-        },
-        "text_bGXbx7": {
-          "type": "text",
-          "settings": {
-            "promo_text": "Free shipping on orders over $50!",
-            "promo_link": ""
-          }
-        }
-      },
-      "block_order": [
-        "text_rN7LDM",
-        "text_bGXbx7"
-      ],
-      "name": "Promo Bar",
-      "settings": {
-        "show_on_page": true
-      }
-    },
     "announcement-bar": {
       "type": "announcement-bar",
       "blocks": {
@@ -60,6 +33,7 @@
         "announcement_aGy6ez",
         "announcement-bar-0"
       ],
+      "disabled": true,
       "settings": {
         "auto_rotate": false,
         "change_slides_speed": 5,
@@ -88,11 +62,47 @@
         "padding_top": 20,
         "padding_bottom": 20
       }
+    },
+    "promo_bar_AYVGkD": {
+      "type": "promo-bar",
+      "blocks": {
+        "announcement_tkPt8B": {
+          "type": "announcement",
+          "settings": {
+            "text": "Browse our latest products?Browse our latest products?Browse our latest products?Browse our latest products?Browse our latest products?Browse our latest products?Browse our latest products?Browse our latest products",
+            "link": ""
+          }
+        },
+        "announcement_3XbYcx": {
+          "type": "announcement",
+          "settings": {
+            "text": "Browse our latest products?Browse our latest products?Browse our latest prod",
+            "link": ""
+          }
+        },
+        "announcement_xizW9Q": {
+          "type": "announcement",
+          "settings": {
+            "text": "Browse our latest products?",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "announcement_tkPt8B",
+        "announcement_3XbYcx",
+        "announcement_xizW9Q"
+      ],
+      "name": "Universal Announcement Slider",
+      "settings": {
+        "autoplay": true,
+        "interval": 5
+      }
     }
   },
   "order": [
-    "promo_bar_x3DQCq",
     "announcement-bar",
-    "header"
+    "header",
+    "promo_bar_AYVGkD"
   ]
 }
