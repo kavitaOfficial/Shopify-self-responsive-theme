@@ -33,43 +33,47 @@
 
 </style>
 
+
+{% if section.blocks.size > 0 %}
 <div
   class="u-announcement"
   data-slider
   data-autoplay="{{ section.settings.autoplay }}"
   data-interval="{{ section.settings.interval | times: 1000 }}"
 >
-
-  <button class="u-slider-btn prev" type="button" aria-label="Previous">
-    ‹
+  <button class="u-btn prev" aria-label="Previous">
+    {{ 'icon-caret.svg' | inline_asset_content }}
   </button>
 
-  <div class="u-slider-track">
-    {% for block in section.blocks %}
-      <div
-        class="u-slide"
-        data-slide
-        data-block-id="{{ block.id }}"
-        {{ block.shopify_attributes }}
-      >
-        {% if block.settings.link != blank %}
-          <a href="{{ block.settings.link }}">
-        {% endif %}
-
-          <p>{{ block.settings.text }}</p>
-
-        {% if block.settings.link != blank %}
-          </a>
-        {% endif %}
-      </div>
-    {% endfor %}
+  <div class="u-slider-viewport">
+    <div class="u-slider-track">
+      {% for block in section.blocks %}
+        <div
+          class="u-slide"
+          data-slide
+          data-block-id="{{ block.id }}"
+          {{ block.shopify_attributes }}
+        >
+          {% if block.settings.link != blank %}
+            <a href="{{ block.settings.link }}">
+              {{ block.settings.text }}
+            </a>
+          {% else %}
+            <span>{{ block.settings.text }}</span>
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>
   </div>
 
-  <button class="u-slider-btn next" type="button" aria-label="Next">
-    ›
+  <button class="u-btn next" aria-label="Next">
+    {{ 'icon-caret.svg' | inline_asset_content }}
   </button>
-
 </div>
+{% endif %}
+
+
+
 
 {% schema %}
 {
