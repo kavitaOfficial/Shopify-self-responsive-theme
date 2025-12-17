@@ -50,20 +50,21 @@
       data-speed="{{ section.settings.change_slides_speed }}"
     >
       {% for block in section.blocks %}
-        <div
-          class="slideshow__slide slider__slide grid__item grid--1-col"
-          {% if forloop.first %}
-            aria-hidden="false"
-          {% else %}
-            aria-hidden="true"
-            tabindex="-1"
-          {% endif %}
-        >
-          <div class="announcement-bar__announcement">
-            <p class="announcement-bar__message h5">
-              <span>{{ block.settings.promo_text }}</span>
-            </p>
-          </div>
+  <div
+  class="slideshow__slide slider__slide grid__item grid--1-col"
+  {% if forloop.first %}
+    aria-hidden="false"
+  {% else %}
+    aria-hidden="true"
+    tabindex="-1"
+  {% endif %}
+>
+
+          {% if block.settings.promo_text != blank %}
+  <p class="announcement-bar__message h5">
+    <span>{{ block.settings.promo_text }}</span>
+  </p>
+{% endif %}
         </div>
       {% endfor %}
     </div>
