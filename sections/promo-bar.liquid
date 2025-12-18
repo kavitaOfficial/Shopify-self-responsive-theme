@@ -5,7 +5,8 @@
   ✅ Autoplay
   ✅ Dots navigation
   ✅ Prev / Next buttons
-  ✅ Shopify section + blocks
+  ✅ Circular navigation
+  ✅ Images & emojis supported
 {% endcomment %}
 
 <style>
@@ -70,56 +71,63 @@
 .slider-dots .dot.active {
   background: #000;
 }
-
-
 </style>
 
 <div class="announcement-bar-wrapper">
-  {% assign valid_blocks = section.blocks | where: "settings.text", blank, false %}
-  {% if valid_blocks.size > 0 %}
+  {% assign has_slides = false %}
+  {% for block in section.blocks %}
+    {% if block.settings.text != blank %}
+      {% assign has_slides = true %}
+      {% break %}
+    {% endif %}
+  {% endfor %}
+
+  {% if has_slides %}
     <slideshow-component class="announcement-bar" role="region">
-      {% if valid_blocks.size > 1 %}
+      {% assign slide_count = 0 %}
       <div class="announcement-bar-slider slider-buttons">
-        <button type="button" class="slider-button slider-button--prev" aria-label="Previous" disabled>
-          &lt;
-        </button>
-      {% endif %}
+        {% if section.blocks.size > 1 %}
+          <button type="button" class="slider-button slider-button--prev" aria-label="Previous" disabled>&lt;</button>
+        {% endif %}
 
         <div class="slider" id="Slider-{{ section.id }}" 
              data-autoplay="{{ section.settings.auto_rotate }}"
              data-speed="{{ section.settings.change_slides_speed }}">
-          {% for block in valid_blocks %}
-            <div class="slideshow__slide slider__slide" tabindex="-1">
-              {% if block.settings.link != blank %}
-                <a href="{{ block.settings.link }}" class="announcement-bar__link">
-              {% endif %}
+          {% for block in section.blocks %}
+            {% if block.settings.text != blank %}
+              {% assign slide_count = slide_count | plus: 1 %}
+              <div class="slideshow__slide slider__slide" tabindex="-1">
+                {% if block.settings.link != blank %}
+                  <a href="{{ block.settings.link }}" class="announcement-bar__link">
+                {% endif %}
                 <p class="announcement-bar__message">
                   {{ block.settings.text | escape }}
                   {% if block.settings.image != blank %}
                     <img src="{{ block.settings.image | img_url: '300x' }}" alt="" />
                   {% endif %}
                 </p>
-              {% if block.settings.link != blank %}
-                </a>
-              {% endif %}
-            </div>
+                {% if block.settings.link != blank %}
+                  </a>
+                {% endif %}
+              </div>
+            {% endif %}
           {% endfor %}
         </div>
 
-      {% if valid_blocks.size > 1 %}
-        <button type="button" class="slider-button slider-button--next" aria-label="Next">
-          &gt;
-        </button>
+        {% if slide_count > 1 %}
+          <button type="button" class="slider-button slider-button--next" aria-label="Next">&gt;</button>
+        {% endif %}
       </div>
 
-      <div class="slider-dots"></div>
+      {% if slide_count > 1 %}
+        <div class="slider-dots"></div>
       {% endif %}
     </slideshow-component>
   {% endif %}
 </div>
 
 <script>
-  document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', () => {
   const sliders = document.querySelectorAll('slideshow-component.announcement-bar');
 
   sliders.forEach(sliderComponent => {
@@ -136,8 +144,9 @@
     const autoplay = slider.dataset.autoplay === 'true';
     let autoplayInterval;
 
-    // Only add dots/buttons if more than 1 slide
-    if (slides.length > 1) {
+    // Only add dots if more than 1 slide
+    let dots = [];
+    if (slides.length > 1 && dotsContainer) {
       slides.forEach((_, i) => {
         const dot = document.createElement('div');
         dot.classList.add('dot');
@@ -145,9 +154,8 @@
         dot.addEventListener('click', () => goToSlide(i));
         dotsContainer.appendChild(dot);
       });
+      dots = Array.from(dotsContainer.children);
     }
-
-    const dots = dotsContainer ? Array.from(dotsContainer.children) : [];
 
     function updateUI() {
       slides.forEach((slide, i) => slide.setAttribute('aria-hidden', i !== index));
@@ -159,21 +167,20 @@
     }
 
     function goToSlide(i) {
-      index = i;
+      index = (i + slides.length) % slides.length; // circular
       slider.scrollTo({ left: slides[index].offsetLeft, behavior: 'smooth' });
       updateUI();
     }
 
     if (slides.length > 1) {
-      prev.addEventListener('click', () => goToSlide((index - 1 + slides.length) % slides.length));
-      next.addEventListener('click', () => goToSlide((index + 1) % slides.length));
+      prev.addEventListener('click', () => goToSlide(index - 1));
+      next.addEventListener('click', () => goToSlide(index + 1));
     }
 
     if (autoplay && slides.length > 1) {
       function startAutoplay() {
         autoplayInterval = setInterval(() => {
-          index = (index + 1) % slides.length;
-          goToSlide(index);
+          goToSlide(index + 1);
         }, speed);
       }
       function stopAutoplay() { clearInterval(autoplayInterval); }
@@ -186,6 +193,7 @@
   });
 });
 </script>
+
 {% schema %}
 {
   "name": "Announcement Slider",
@@ -200,7 +208,8 @@
       "name": "Slide",
       "settings": [
         { "type": "text", "id": "text", "label": "Text" },
-        { "type": "url", "id": "link", "label": "Link" }
+        { "type": "url", "id": "link", "label": "Link" },
+        { "type": "image_picker", "id": "image", "label": "Optional Image" }
       ]
     }
   ],
