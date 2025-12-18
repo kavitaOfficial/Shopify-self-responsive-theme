@@ -100,3 +100,65 @@
     </slideshow-component>
   {% endif %}
 </div>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+  const sliders = document.querySelectorAll('slideshow-component.announcement-bar');
+
+  sliders.forEach(sliderComponent => {
+    const slider = sliderComponent.querySelector('.slider');
+    const slides = Array.from(slider.children);
+    if (!slides.length) return; // ❌ No slides, exit
+    const prev = sliderComponent.querySelector('.slider-button--prev');
+    const next = sliderComponent.querySelector('.slider-button--next');
+    const dotsContainer = sliderComponent.querySelector('.slider-dots');
+
+    let index = 0;
+    const speed = parseInt(slider.dataset.speed || 5, 10) * 1000;
+    const autoplay = slider.dataset.autoplay === 'true';
+    let autoplayInterval;
+
+    // Build dots
+    slides.forEach((_, i) => {
+      const dot = document.createElement('div');
+      dot.classList.add('dot');
+      if (i === 0) dot.classList.add('active');
+      dot.addEventListener('click', () => goToSlide(i));
+      dotsContainer.appendChild(dot);
+    });
+
+    const dots = Array.from(dotsContainer.children);
+
+    function updateUI() {
+      slides.forEach((slide, i) => slide.setAttribute('aria-hidden', i !== index));
+      dots.forEach((dot, i) => dot.classList.toggle('active', i === index));
+      prev.disabled = index === 0;
+      next.disabled = index === slides.length - 1;
+    }
+
+    function goToSlide(i) {
+      index = i;
+      slider.scrollTo({ left: slides[index].offsetLeft, behavior: 'smooth' });
+      updateUI();
+    }
+
+    prev.addEventListener('click', () => goToSlide(Math.max(index - 1, 0)));
+    next.addEventListener('click', () => goToSlide(Math.min(index + 1, slides.length - 1)));
+
+    if (autoplay) {
+      function startAutoplay() {
+        autoplayInterval = setInterval(() => {
+          index = (index + 1) % slides.length;
+          goToSlide(index);
+        }, speed);
+      }
+      function stopAutoplay() { clearInterval(autoplayInterval); }
+      sliderComponent.addEventListener('mouseenter', stopAutoplay);
+      sliderComponent.addEventListener('mouseleave', startAutoplay);
+      startAutoplay();
+    }
+
+    updateUI();
+  });
+});
+
+</script>
