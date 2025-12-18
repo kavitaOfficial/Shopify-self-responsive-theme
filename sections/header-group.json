@@ -63,46 +63,46 @@
         "padding_bottom": 20
       }
     },
-    "promo_bar_AYVGkD": {
+    "promo_bar_9hRd9x": {
       "type": "promo-bar",
       "blocks": {
-        "announcement_tkPt8B": {
+        "announcement_PpKiCg": {
           "type": "announcement",
           "settings": {
-            "text": "Browse our latest products?Browse our latest products?Browse our latest products?Browse our latest products?Browse our latest products?Browse our latest products?Browse our latest products?Browse our latest products",
+            "text": "Free Shipping Worldwide",
             "link": ""
           }
         },
-        "announcement_3XbYcx": {
+        "announcement_QAwDwh": {
           "type": "announcement",
           "settings": {
-            "text": "Browse our latest products?Browse our latest products?Browse our latest prod",
+            "text": "Flat 50% Off Today",
             "link": ""
           }
         },
-        "announcement_xizW9Q": {
+        "announcement_bR69DP": {
           "type": "announcement",
           "settings": {
-            "text": "Browse our latest products?",
+            "text": "Buy Now, Pay Late",
             "link": ""
           }
         }
       },
       "block_order": [
-        "announcement_tkPt8B",
-        "announcement_3XbYcx",
-        "announcement_xizW9Q"
+        "announcement_PpKiCg",
+        "announcement_QAwDwh",
+        "announcement_bR69DP"
       ],
-      "name": "Universal Announcement Slider",
+      "name": "Announcement Slider",
       "settings": {
-        "autoplay": true,
-        "interval": 5
+        "auto_rotate": true,
+        "change_slides_speed": 5
       }
     }
   },
   "order": [
     "announcement-bar",
     "header",
-    "promo_bar_AYVGkD"
+    "promo_bar_9hRd9x"
   ]
 }
