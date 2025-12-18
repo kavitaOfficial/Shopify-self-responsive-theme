@@ -33,6 +33,7 @@
         "announcement_aGy6ez",
         "announcement-bar-0"
       ],
+      "disabled": true,
       "settings": {
         "auto_rotate": false,
         "change_slides_speed": 5,
