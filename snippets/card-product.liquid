@@ -160,7 +160,7 @@
               {{ card_product.title | escape }}
             </a>
           </h3>
-          <div class="card-information">
+          <div class="card-information hfggh">
             {%- if show_vendor -%}
               <span class="visually-hidden">{{ 'accessibility.vendor' | t }}</span>
               <div class="caption-with-letter-spacing light">{{ card_product.vendor }}</div>
@@ -288,6 +288,34 @@
             {%- endif -%}
           </div>
         </div>
+        {% comment %} Quick view model kavita {% endcomment %}
+         <div class="quick-add no-js-hidden">
+
+  <modal-opener data-modal="#QuickView-{{ card_product.id }}">
+
+    <button
+      id="{{ product_form_id }}-submit"
+      type="button"
+      name="quick-view"
+      class="quick-add__submit button button--full-width button--secondary"
+      aria-haspopup="dialog"
+      aria-controls="QuickView-{{ card_product.id }}"
+      aria-labelledby="{{ product_form_id }}-submit title-{{ section_id }}-{{ card_product.id }}"
+      data-product-url="{{ card_product.url }}"
+      data-quick-view
+      data-product-handle="{{ card_product.handle }}"
+    >
+
+      Quick View
+
+      {%- render 'loading-spinner' -%}
+
+    </button>
+
+  </modal-opener>
+
+</div>
+         {% comment %} end {% endcomment %}
         {% assign product_form_id = 'quick-add-' | append: section_id | append: card_product.id %}
         {% if quick_add == 'standard' %}
           <div class="quick-add no-js-hidden">
@@ -415,6 +443,246 @@
                 {% render 'quantity-input', variant: card_product.selected_or_first_available_variant, min: 0 %}
               {% endif %}
             </quick-add-bulk>
+            {% comment %} custome code  {% endcomment %}
+              {% elsif quick_add == 'model' %}
+                <div class="quick-view no-js-hidden">
+
+                <button
+                  type="button"
+                  class="quick-view__button button button--full-width button--secondary"
+                  aria-haspopup="dialog"
+                  aria-controls="QuickView-{{ card_product.id }}"
+                  data-quick-view="{{ card_product.handle }}"
+                  data-product-url="{{ card_product.url }}"
+                >
+                  Quick View
+                </button>
+
+              </div>
+
+              <quick-view-modal
+                id="QuickView-{{ card_product.id }}"
+                class="quick-view-modal"
+              >
+
+                <div
+                  role="dialog"
+                  aria-modal="true"
+                  aria-label="Quick view {{ card_product.title | escape }}"
+                  class="quick-view-modal__content global-settings-popup"
+                  tabindex="-1"
+                >
+
+                  <button
+                    type="button"
+                    class="quick-view-modal__toggle"
+                    aria-label="{{ 'accessibility.close' | t }}"
+                  >
+                    {{- 'icon-close.svg' | inline_asset_content -}}
+                  </button>
+
+
+                  <div class="quick-view-modal__body">
+
+                    <!-- ================================= -->
+                    <!-- PRODUCT GALLERY -->
+                    <!-- ================================= -->
+
+                    <div class="quick-view-modal__gallery">
+
+                      {% if card_product.featured_media %}
+
+                        <div class="quick-view-modal__main-image">
+
+                          {{
+                            card_product.featured_media
+                            | image_url: width: 800
+                            | image_tag:
+                              loading: 'lazy',
+                              alt: card_product.featured_media.alt
+                          }}
+
+                        </div>
+
+                      {% endif %}
+
+                    </div>
+
+
+                    <!-- ================================= -->
+                    <!-- PRODUCT INFORMATION -->
+                    <!-- ================================= -->
+
+                    <div class="quick-view-modal__details">
+
+                      <!-- Product title -->
+
+                      <h2 class="quick-view-modal__title">
+                        {{ card_product.title | escape }}
+                      </h2>
+
+
+                      <!-- Price -->
+
+                      <div class="quick-view-modal__price">
+                        {% render 'price',
+                          product: card_product,
+                          price_class: '',
+                          show_compare_at_price: true
+                        %}
+                      </div>
+
+
+                      <!-- ================================= -->
+                      <!-- PRODUCT OPTIONS -->
+                      <!-- ================================= -->
+
+                      {% unless card_product.has_only_default_variant %}
+
+                        <div class="quick-view-modal__options">
+
+                          {% for option in card_product.options_with_values %}
+
+                            <fieldset
+                              class="quick-view-option"
+                              data-option-index="{{ forloop.index0 }}"
+                            >
+
+                              <legend class="quick-view-option__label">
+                                {{ option.name }}
+                              </legend>
+
+
+                              <div class="quick-view-option__values">
+
+                                {% for value in option.values %}
+
+                                  <button
+                                    type="button"
+                                    class="quick-view-option__value"
+                                    data-option-value="{{ value | escape }}"
+                                    data-option-index="{{ forloop.parentloop.index0 }}"
+                                  >
+                                    {{ value }}
+                                  </button>
+
+                                {% endfor %}
+
+                              </div>
+
+                            </fieldset>
+
+                          {% endfor %}
+
+                        </div>
+
+                      {% endunless %}
+
+
+                      <!-- ================================= -->
+                      <!-- AVAILABILITY -->
+                      <!-- ================================= -->
+
+                      <div
+                        class="quick-view-modal__availability"
+                        data-quick-view-availability
+                      >
+                        {% if card_product.available %}
+                          Available
+                        {% else %}
+                          Sold out
+                        {% endif %}
+                      </div>
+
+
+                      <!-- ================================= -->
+                      <!-- QUANTITY -->
+                      <!-- ================================= -->
+
+                      <div class="quick-view-modal__quantity">
+
+                        <button
+                          type="button"
+                          data-quantity-minus
+                          aria-label="Decrease quantity"
+                        >
+                          -
+                        </button>
+
+                        <input
+                          type="number"
+                          value="1"
+                          min="1"
+                          data-quantity-input
+                          aria-label="Quantity"
+                        >
+
+                        <button
+                          type="button"
+                          data-quantity-plus
+                          aria-label="Increase quantity"
+                        >
+                          +
+                        </button>
+
+                      </div>
+
+
+                      <!-- ================================= -->
+                      <!-- ADD TO CART -->
+                      <!-- ================================= -->
+
+                      <button
+                        type="button"
+                        class="quick-view-modal__add button button--full-width"
+                        data-quick-view-add
+                        data-variant-id="{{ card_product.selected_or_first_available_variant.id }}"
+                        {% unless card_product.available %}
+                          disabled
+                        {% endunless %}
+                      >
+
+                        {% if card_product.available %}
+                          Add to cart
+                        {% else %}
+                          Sold out
+                        {% endif %}
+
+                      </button>
+
+
+                      <!-- ================================= -->
+                      <!-- ERROR -->
+                      <!-- ================================= -->
+
+                      <div
+                        class="quick-view-modal__error"
+                        data-quick-view-error
+                        role="alert"
+                        hidden
+                      ></div>
+
+
+                      <!-- ================================= -->
+                      <!-- VIEW FULL DETAILS -->
+                      <!-- ================================= -->
+
+                      <a
+                        href="{{ card_product.url }}"
+                        class="quick-view-modal__full-details"
+                      >
+                        View full details
+                      </a>
+
+                    </div>
+
+                  </div>
+
+                </div>
+
+              </quick-view-modal>
+
+             {% comment %} end {% endcomment %}
           {% else %}
             <div class="quick-add no-js-hidden">
               {%- liquid
@@ -610,7 +878,7 @@
               {{ 'onboarding.product_title' | t }}
             </a>
           </h3>
-          <div class="card-information">
+          <div class="card-information cvsvsd">
             {%- if show_vendor -%}
               <span class="visually-hidden">{{ 'accessibility.vendor' | t }}</span>
               <div class="caption-with-letter-spacing light">{{ 'products.product.vendor' | t }}</div>

@@ -14,13 +14,6 @@
     "announcement-bar": {
       "type": "announcement-bar",
       "blocks": {
-        "announcement_aGy6ez": {
-          "type": "announcement",
-          "settings": {
-            "text": "Browse our latest products?Browse our latest products?Browse our latest products?Browse our latest products?Browse our latest products?Browse our latest products?Browse our latest products?Browse our latest products?",
-            "link": ""
-          }
-        },
         "announcement-bar-0": {
           "type": "announcement",
           "settings": {
@@ -30,18 +23,16 @@
         }
       },
       "block_order": [
-        "announcement_aGy6ez",
         "announcement-bar-0"
       ],
-      "disabled": true,
       "settings": {
         "auto_rotate": false,
         "change_slides_speed": 5,
         "color_scheme": "scheme-1",
         "show_line_separator": true,
-        "show_social": true,
-        "enable_country_selector": true,
-        "enable_language_selector": true
+        "show_social": false,
+        "enable_country_selector": false,
+        "enable_language_selector": false
       }
     },
     "header": {
@@ -50,7 +41,7 @@
         "logo_position": "middle-left",
         "mobile_logo_position": "center",
         "menu": "main-menu",
-        "menu_type_desktop": "dropdown",
+        "menu_type_desktop": "mega",
         "sticky_header_type": "on-scroll-up",
         "show_line_separator": true,
         "color_scheme": "scheme-1",
@@ -62,47 +53,10 @@
         "padding_top": 20,
         "padding_bottom": 20
       }
-    },
-    "promo_bar_9hRd9x": {
-      "type": "promo-bar",
-      "blocks": {
-        "announcement_PpKiCg": {
-          "type": "announcement",
-          "settings": {
-            "text": "Free Shipping Worldwide",
-            "link": ""
-          }
-        },
-        "announcement_QAwDwh": {
-          "type": "announcement",
-          "settings": {
-            "text": "Flat 50% Off Today",
-            "link": ""
-          }
-        },
-        "announcement_bR69DP": {
-          "type": "announcement",
-          "settings": {
-            "text": "Buy Now, Pay Late,Buy Now, Pay Late,Buy Now, Pay Late,Buy Now, Pay Late,Buy Now, Pay Late,Buy Now, Pay Late,",
-            "link": ""
-          }
-        }
-      },
-      "block_order": [
-        "announcement_PpKiCg",
-        "announcement_QAwDwh",
-        "announcement_bR69DP"
-      ],
-      "name": "Announcement Slider",
-      "settings": {
-        "auto_rotate": true,
-        "change_slides_speed": 5
-      }
     }
   },
   "order": [
     "announcement-bar",
-    "header",
-    "promo_bar_9hRd9x"
+    "header"
   ]
 }
