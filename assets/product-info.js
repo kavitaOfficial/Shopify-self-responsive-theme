@@ -176,6 +176,142 @@ if (!customElements.get('product-info')) {
           }
 
           this.updateMedia(html, variant?.featured_media?.id);
+          console.log("NEW VARIANT :", variant);
+
+           // ==========================================
+          // CUSTOM: UPDATE IMAGES BY COLOR
+          // ==========================================
+// =========================================================
+    // 4. GET OPTION NAMES
+    // =========================================================
+    //
+    // Example:
+    //
+    // 0 → Color
+    // 1 → Accessory size
+    // 2 → Material
+    //
+    // =========================================================
+
+    const variantInputs =
+      html.querySelectorAll(
+        '.product-form__input[data-option-name]'
+      );
+
+
+    console.log(
+      'VARIANT INPUTS:',
+      variantInputs
+    );
+
+
+    // =========================================================
+    // 5. FIND COLOR OPTION INDEX
+    // =========================================================
+
+    const colorIndex =
+      Array.from(variantInputs).findIndex(
+        (input) => {
+
+          const optionName =
+            input.dataset.optionName
+              ?.trim()
+              .toLowerCase();
+
+          return optionName === 'color';
+
+        }
+      );
+
+
+    console.log(
+      'COLOR INDEX:',
+      colorIndex
+    );
+    // =========================================================
+    // 6. GET SELECTED COLOR
+    // =========================================================
+    //
+    // colorIndex = 0
+    // → variant.option1
+    //
+    // colorIndex = 1
+    // → variant.option2
+    //
+    // colorIndex = 2
+    // → variant.option3
+    //
+    // =========================================================
+
+    let selectedColor = null;
+
+
+    if (colorIndex !== -1) {
+
+      selectedColor =
+        variant[
+          `option${colorIndex + 1}`
+        ]
+          ?.trim()
+          .toLowerCase();
+
+    }
+
+
+    console.log(
+      'SELECTED COLOR:',
+      selectedColor
+    );
+
+    // =========================================================
+    // 8. FILTER PRODUCT IMAGES BY COLOR
+    // =========================================================
+    //
+    // Example:
+    //
+    // data-color="blue"
+    // data-color="white"
+    // data-color="gray"
+    //
+    // If selectedColor = "blue"
+    //
+    // blue  → SHOW
+    // white → HIDE
+    // gray  → HIDE
+    //
+    // =========================================================
+
+    const mediaItems =
+      this.querySelectorAll(
+        '.product__media-item[data-color]'
+      );
+
+
+    mediaItems.forEach(
+      (mediaItem) => {
+
+        const mediaColor =
+          mediaItem.dataset.color
+            ?.trim()
+            .toLowerCase();
+
+
+        const shouldShow =
+          mediaColor === selectedColor;
+
+
+        mediaItem.classList.toggle(
+          'hidden',
+          !shouldShow
+        );
+
+      }
+    );
+
+
+           // ==========================================
+          // END CUSTOM: UPDATE IMAGES BY COLOR
+          // ==========================================
 
           const updateSourceFromDestination = (id, shouldHide = (source) => false) => {
             const source = html.getElementById(`${id}-${this.sectionId}`);
