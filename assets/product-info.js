@@ -278,35 +278,46 @@ if (!customElements.get('product-info')) {
     // blue  → SHOW
     // white → HIDE
     // gray  → HIDE
-    //
+    //Green selected
+    //→ no green images
+    //→ show all images
     // =========================================================
 
-    const mediaItems =
-      this.querySelectorAll(
-        '.product__media-item[data-color]'
-      );
+          const mediaItems =
+            this.querySelectorAll(
+              '.product__media-item[data-color]'
+            );
 
+          let matchingMediaCount = 0;
 
-    mediaItems.forEach(
-      (mediaItem) => {
+          mediaItems.forEach((mediaItem) => {
 
-        const mediaColor =
-          mediaItem.dataset.color
-            ?.trim()
-            .toLowerCase();
+            const mediaColor =
+              mediaItem.dataset.color
+                ?.trim()
+                .toLowerCase();
 
+            if (mediaColor === selectedColor) {
+              matchingMediaCount++;
+            }
 
-        const shouldShow =
-          mediaColor === selectedColor;
+          });
 
+          mediaItems.forEach((mediaItem) => {
 
-        mediaItem.classList.toggle(
-          'hidden',
-          !shouldShow
-        );
+            const mediaColor =
+              mediaItem.dataset.color
+                ?.trim()
+                .toLowerCase();
 
-      }
-    );
+            const shouldShow =
+              matchingMediaCount === 0 ||
+              mediaColor === selectedColor;
+
+            mediaItem.dataset.activeMedia =
+              shouldShow ? 'true' : 'false';
+
+          });
 
 
            // ==========================================
@@ -376,6 +387,7 @@ if (!customElements.get('product-info')) {
       }
 
       updateMedia(html, variantFeaturedMediaId) {
+        console.log("Hy iam running");
         if (!variantFeaturedMediaId) return;
 
         const mediaGallerySource = this.querySelector('media-gallery ul');

@@ -1,3 +1,10 @@
+
+ {% assign family = product.metafields.custom.product_family_metaobject.value %}
+{% assign material_hero_feature = product.metafields.custom.product_material_hero_feature.value %}
+
+
+ <script src="{{ 'product-switcher.js' | asset_url }}" defer="defer"></script>
+
 <product-info
   id="MainProduct-{{ section.id }}"
   class="section-{{ section.id }}-padding gradient color-{{ section.settings.color_scheme }}"
@@ -15,6 +22,7 @@
   {{ 'component-slider.css' | asset_url | stylesheet_tag }}
   {{ 'component-rating.css' | asset_url | stylesheet_tag }}
   {{ 'component-deferred-media.css' | asset_url | stylesheet_tag }}
+  
 
   {% unless product.has_only_default_variant %}
     {{ 'component-product-variant-picker.css' | asset_url | stylesheet_tag }}
@@ -41,6 +49,8 @@
 
   <script src="{{ 'product-info.js' | asset_url }}" defer="defer"></script>
   <script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
+
+   
   {%- if product.quantity_price_breaks_configured? -%}
     <script src="{{ 'show-more.js' | asset_url }}" defer="defer"></script>
     <script src="{{ 'price-per-item.js' | asset_url }}" defer="defer"></script>
@@ -73,12 +83,31 @@
   {%- endif -%}
 
   {% assign variant_images = product.images | where: 'attached_to_variant?', true | map: 'src' %}
+{% assign selected_variant = product.selected_or_first_available_variant %}
+{% comment %} 
+{% for option in product.options_with_values %}
+
+  {% if option.name == 'Color' %}
+
+    {% assign color_index = forloop.index %}
+    {% assign selected_color = selected_variant.options[forloop.index0] %}
+
+  {% endif %}
+
+
+{% endfor %}
+ 
+<p>Variant ID: {{ selected_variant.id }}</p>
+<p>Selected Color: {{ selected_color }}</p>
+ 
+{% endcomment %}
+
   <div class="page-width">
     <div class="product product--{{ section.settings.media_size }} product--{{ section.settings.media_position }} product--{{ section.settings.gallery_layout }} product--mobile-{{ section.settings.mobile_thumbnails }} grid grid--1-col {% if product.media.size > 0 %}grid--2-col-tablet{% else %}product--no-media{% endif %}">
       <div class="grid__item product__media-wrapper">
-        {% render 'product-media-gallery', variant_images: variant_images %}
+        {% render 'product-media-gallery', variant_images: variant_images ,   selected_variant: selected_variant %}
       </div>
-      <div class="product__info-wrapper grid__item{% if settings.page_width > 1400 and section.settings.media_size == "small" %} product__info-wrapper--extra-padding{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
+      <div class="js-product-page product__info-wrapper grid__item{% if settings.page_width > 1400 and section.settings.media_size == "small" %} product__info-wrapper--extra-padding{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}" data-current-product-id="{{ product.id }}" data-section-id="{{ section.id }}">
         <section
           id="ProductInfo-{{ section.id }}"
           class="product__info-container{% if section.settings.enable_sticky_info %} product__column-sticky{% endif %}"
@@ -96,6 +125,31 @@
                 >
                   {{- block.settings.text -}}
                 </p>
+              {%- when 'product_swatches' -%}
+              <legend class="form__label">Color:<span data-selected-value>{{- option.selected_value -}}</span></legend>
+              {% assign product_swatch_list = product.metafields.custom.product_swatch_list.value %}
+              <div class="product-swatches">
+                <!-- Current Product -->
+                {% if product.metafields.custom.swatch_primary_color.value != blank or product.metafields.custom.swatch_primary_color.value  %}
+                <button
+                  class="product-swatch js-product-swatch is-active" type="button" data-product-id="{{ product.id }}" title="{{ product.title }}{% if product.metafields.custom.product_color_name != blank  %} - {{product.metafields.custom.product_color_name | capitalize }}{% endif %}" data-product-handle="{{ product.handle }}" data-product-url="{{ product.url }}"
+                  data-product-edition="{{ product.metafields.custom.product_color_edition }}" data-section-id="{{ section.id }}"  data-product-url={{ product.url }}
+                   style=" --color-1: {{ product.metafields.custom.swatch_primary_color.value }};  --color-2: {{ product.metafields.custom.swatch_primary_color.value}}; ">
+                </button>
+                {% endif %}
+
+                <!-- Other Products -->
+                {% if product_swatch_list != blank and product.metafields.custom.swatch_primary_color.value != blank  %}
+                  {% for sibling in product_swatch_list %}
+                    {% unless sibling.id == product.id %}
+                      <button class="product-swatch js-product-swatch"  type="button" data-product-id="{{ sibling.id }}" title="{{ sibling.title }}{% if product.metafields.custom.product_color_name != blank  %} - {{sibling.metafields.custom.product_color_name | capitalize }}{% endif %}" data-product-handle="{{ sibling.handle }}" data-product-url="{{ sibling.url }}"
+                        data-product-edition="{{ sibling.metafields.custom.product_color_edition }}" data-section-id="{{ section.id }}" data-product-url={{ sibling.url }}
+                        style=" --color-1: {{ sibling.metafields.custom.swatch_primary_color.value }}; --color-2: {{ sibling.metafields.custom.swatch_secondary_color.value }}; ">
+                      </button>
+                    {% endunless %}
+                  {% endfor %}
+                {% endif %}
+              </div>
               {%- when 'title' -%}
                 <div class="product__title" {{ block.shopify_attributes }}>
                   <h1>{{ product.title | escape }}</h1>
@@ -681,10 +735,10 @@
             {{- 'icon-arrow.svg' | inline_asset_content -}}
           </a>
         </section>
-      </div>
+      </div>  
     </div>
 
-    {% render 'product-media-modal', variant_images: variant_images %}
+    {% render 'product-media-modal', variant_images: variant_images ,   selected_variant: selected_variant %}
 
     {% assign popups = section.blocks | where: 'type', 'popup' %}
     {%- for block in popups -%}
@@ -736,6 +790,19 @@
       {{ product | structured_data }}
     </script>
   </div>
+  {% comment %} Extra information call {% endcomment %}
+
+         {% if family %}
+
+            {% render 'product-layout-one',
+              product: product,
+              family: family,
+              material_hero_feature: material_hero_feature
+
+            %}
+
+          {% endif %}  
+      {% comment %} End {% endcomment %}
 </product-info>
 
 {% schema %}
@@ -748,6 +815,10 @@
       "type": "@app"
     },
     {
+      "type": "product_swatches",
+      "name": "Product swatches"
+    },
+    {
       "type": "text",
       "name": "t:sections.main-product.blocks.text.name",
       "settings": [
@@ -757,6 +828,7 @@
           "default": "t:sections.main-product.blocks.text.settings.text.default",
           "label": "t:sections.main-product.blocks.text.settings.text.label"
         },
+        
         {
           "type": "select",
           "id": "text_style",
@@ -2266,3 +2338,4 @@
   ]
 }
 {% endschema %}
+

@@ -42,6 +42,18 @@
   endif
 -%}
 
+{% comment %} CUSTOM CODE {% endcomment %}
+ {%- assign selected_color = '' -%}
+ {%- assign selected_color_active = false -%}
+{%- for option in product.options_with_values -%}
+  {%- if option.name == 'Color' -%}
+    {%- assign selected_color = selected_variant.options[forloop.index0] -%}
+    {%- assign selected_color_active = true -%}
+  {%- endif -%}
+{%- endfor -%}
+
+ {% comment %} END {% endcomment %}
+
 <media-gallery
   id="MediaGallery-{{ section.id }}"
   role="region"
@@ -95,10 +107,15 @@
         {% endif %}
 
         {%- unless media.id == product.selected_or_first_available_variant.featured_media.id -%}
+          {% assign media_color = media.alt | handle %}
+          {% assign selected_color_handle = selected_color | handle %}
           <li
             id="Slide-{{ section.id }}-{{ media.id }}"
             class="product__media-item grid__item slider__slide{% if single_media_visible %} product__media-item--single{% endif %}{% if product.selected_or_first_available_variant.featured_media == nil and forloop.index == 1 %} is-active{% endif %}{% if media.media_type != 'image' %} product__media-item--full{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}"
             data-media-id="{{ section.id }}-{{ media.id }}" data-color="{{ media.alt | handle }}"
+            {% if selected_color_active == true %}
+              data-active-media="{% if media_color == selected_color_handle %}true{% else %}false{% endif %}"
+            {% endif %}
           >
             {%- liquid
               assign media_position = media_position | default: 0 | plus: 1

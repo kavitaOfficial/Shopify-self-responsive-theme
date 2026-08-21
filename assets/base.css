@@ -654,7 +654,7 @@ summary {
   position: relative;
 }
 
-summary .icon-caret {
+summary .icon-caret{
   position: absolute;
   height: 0.6rem;
   right: 1.5rem;
@@ -2933,7 +2933,7 @@ details-disclosure > details {
 
 .gradient {
   background: rgb(var(--color-background));
-  background: var(--gradient-background);
+  background: #ece9e2;
   background-attachment: fixed;
 }
 
@@ -3596,5 +3596,13 @@ details-disclosure > details {
   }
 }
 body{
-  border: 1px solid blue;
+  border: 1px solid red;
+  background-color: aqua;
+}
+.product__media-item[data-active-media="false"] {
+  display: none;
+}
+
+.product__media-item[data-active-media="true"] {
+  display: block;
 }
