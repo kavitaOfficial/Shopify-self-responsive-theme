@@ -12,10 +12,6 @@
     "main": {
       "type": "main-product",
       "blocks": {
-        "product_swatches_maEeAm": {
-          "type": "product_swatches",
-          "settings": {}
-        },
         "vendor": {
           "type": "text",
           "settings": {
@@ -61,7 +57,6 @@
         }
       },
       "block_order": [
-        "product_swatches_maEeAm",
         "vendor",
         "title",
         "price",
