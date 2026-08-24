@@ -125,31 +125,250 @@
                 >
                   {{- block.settings.text -}}
                 </p>
-              {%- when 'product_swatches' -%}
-              <legend class="form__label">Color:<span data-selected-value>{{- option.selected_value -}}</span></legend>
-              {% assign product_swatch_list = product.metafields.custom.product_swatch_list.value %}
-              <div class="product-swatches">
-                <!-- Current Product -->
-                {% if product.metafields.custom.swatch_primary_color.value != blank or product.metafields.custom.swatch_primary_color.value  %}
-                <button
-                  class="product-swatch js-product-swatch is-active" type="button" data-product-id="{{ product.id }}" title="{{ product.title }}{% if product.metafields.custom.product_color_name != blank  %} - {{product.metafields.custom.product_color_name | capitalize }}{% endif %}" data-product-handle="{{ product.handle }}" data-product-url="{{ product.url }}"
-                  data-product-edition="{{ product.metafields.custom.product_color_edition }}" data-section-id="{{ section.id }}"  data-product-url={{ product.url }}
-                   style=" --color-1: {{ product.metafields.custom.swatch_primary_color.value }};  --color-2: {{ product.metafields.custom.swatch_primary_color.value}}; ">
-                </button>
-                {% endif %}
+                {% comment %}
+                  ============================================================
+                  CUSTOM PRODUCT SWATCH LIST
+                  ============================================================
 
-                <!-- Other Products -->
-                {% if product_swatch_list != blank and product.metafields.custom.swatch_primary_color.value != blank  %}
-                  {% for sibling in product_swatch_list %}
-                    {% unless sibling.id == product.id %}
-                      <button class="product-swatch js-product-swatch"  type="button" data-product-id="{{ sibling.id }}" title="{{ sibling.title }}{% if product.metafields.custom.product_color_name != blank  %} - {{sibling.metafields.custom.product_color_name | capitalize }}{% endif %}" data-product-handle="{{ sibling.handle }}" data-product-url="{{ sibling.url }}"
-                        data-product-edition="{{ sibling.metafields.custom.product_color_edition }}" data-section-id="{{ section.id }}" data-product-url={{ sibling.url }}
-                        style=" --color-1: {{ sibling.metafields.custom.swatch_primary_color.value }}; --color-2: {{ sibling.metafields.custom.swatch_secondary_color.value }}; ">
-                      </button>
-                    {% endunless %}
-                  {% endfor %}
-                {% endif %}
-              </div>
+                  Purpose:
+                  - Display the current product's color swatch.
+                  - Display related/sibling product color swatches.
+                  - Show the current color name and edition.
+                  - Store product information in data attributes for JavaScript.
+                  - JS uses these attributes for:
+                      1. Swatch hover preview
+                      2. AJAX product switching
+                      3. Updating color and edition
+                  ============================================================
+                {% endcomment %}
+
+                {%- when 'product_swatches' -%}
+
+                  {% comment %}
+                    Get the related products configured in the
+                    product_swatch_list metafield.
+                  {% endcomment %}
+
+                  {% assign product_swatch_list = product.metafields.custom.product_swatch_list.value %}
+
+
+                  {% comment %}
+                    Only render the complete swatch component when
+                    the product has a swatch list.
+                  {% endcomment %}
+
+                  {% if product_swatch_list != blank %}
+
+
+                    {% comment %}
+                      ==========================================================
+                      CURRENT COLOR INFORMATION
+                      ==========================================================
+
+                      Displays:
+                      Color: Red (Premium)
+
+                      The JavaScript temporarily replaces these values
+                      when the user hovers/touches another swatch.
+                    {% endcomment %}
+
+                    {% if product.metafields.custom.product_color_name != blank
+                      or product.metafields.custom.product_color_edition != blank %}
+
+                      <span class="form__label">
+
+                        {% if product.metafields.custom.product_color_name != blank %}
+                          Color:
+                          <span class="selected_swatch_color">
+                            {{ product.metafields.custom.product_color_name | capitalize }}
+                          </span>
+                        {% endif %}
+
+                        {% if product.metafields.custom.product_color_edition != blank %}
+                          <span class="selected_swatch_edition">
+                            ({{ product.metafields.custom.product_color_edition | capitalize }})
+                          </span>
+                        {% endif %}
+
+                      </span>
+
+                    {% endif %}
+
+
+                    {% comment %}
+                      ==========================================================
+                      PRODUCT SWATCHES
+                      ==========================================================
+
+                      Each swatch contains product information in data attributes.
+
+                      JavaScript uses these attributes to:
+                      - Preview color on hover
+                      - Preview edition on hover
+                      - Identify the selected product
+                      - Load the product through AJAX
+                    {% endcomment %}
+
+                    <p class="form__label">Canvas</p>
+
+                    <div class="product-swatches product-form__input--swatch">
+
+
+                      {% comment %}
+                        ========================================================
+                        CURRENT PRODUCT SWATCH
+                        ========================================================
+
+                        The current product is always displayed first.
+
+                        "is-active" indicates that this is the product currently
+                        being displayed.
+                      {% endcomment %}
+
+                      {% if product.metafields.custom.swatch_primary_color.value != blank %}
+                      
+                        <button
+                          class="product-swatch js-product-swatch is-active"
+                          type="button"
+
+                          {%- comment -%}
+                            Product identification
+                          {%- endcomment -%}
+
+                          data-product-id="{{ product.id }}"
+                          data-product-handle="{{ product.handle }}"
+                          data-product-url="{{ product.url }}"
+
+                          {%- comment -%}
+                            Product information used by JavaScript
+                            for hover/touch preview.
+                          {%- endcomment -%}
+
+                          data-product-color="{{ product.metafields.custom.product_color_name | capitalize }}"
+                          data-product-edition="{{ product.metafields.custom.product_color_edition }}"
+
+                          {%- comment -%}
+                            Shopify section information used by the
+                            AJAX product switcher.
+                          {%- endcomment -%}
+
+                          data-section-id="{{ section.id }}"
+
+                          {%- comment -%}
+                            Tooltip shown when the user hovers the swatch.
+                          {%- endcomment -%}
+
+                          title="{{ product.title }}
+                            {% if product.metafields.custom.product_color_name != blank %}
+                              - {{ product.metafields.custom.product_color_name | capitalize }}
+                            {% endif %}
+                          "
+
+                          {%- comment -%}
+                            CSS custom properties used to create the
+                            swatch color / gradient.
+                          {%- endcomment -%}
+
+                          style="
+                            --color-1: {{ product.metafields.custom.swatch_primary_color.value }};
+                            --color-2: {{ product.metafields.custom.swatch_secondary_color.value }};
+                          "
+                        >
+                        </button>
+
+                      {% endif %}
+
+
+                      {% comment %}
+                        ========================================================
+                        RELATED / SIBLING PRODUCT SWATCHES
+                        ========================================================
+
+                        Loop through products stored in the
+                        product_swatch_list metafield.
+
+                        The current product is skipped because it has already
+                        been rendered above.
+                      {% endcomment %}
+
+                      {% for sibling in product_swatch_list %}
+
+                        {% unless sibling.id == product.id %}
+
+
+                          {% comment %}
+                            Only create a swatch when the sibling product
+                            has a primary swatch color.
+                          {% endcomment %}
+
+                          {% if sibling.metafields.custom.swatch_primary_color.value != blank %}
+
+                            <button
+                              class="product-swatch js-product-swatch"
+                              type="button"
+
+                              {%- comment -%}
+                                Product identification
+                              {%- endcomment -%}
+
+                              data-product-id="{{ sibling.id }}"
+                              data-product-handle="{{ sibling.handle }}"
+                              data-product-url="{{ sibling.url }}"
+
+                              {%- comment -%}
+                                Product information used by JavaScript
+                                for hover/touch preview.
+                              {%- endcomment -%}
+
+                              data-product-color="{{ sibling.metafields.custom.product_color_name | capitalize }}"
+                              data-product-edition="{{ sibling.metafields.custom.product_color_edition }}"
+
+                              {%- comment -%}
+                                Shopify section information used by the
+                                AJAX product switcher.
+                              {%- endcomment -%}
+
+                              data-section-id="{{ section.id }}"
+
+                              {%- comment -%}
+                                Tooltip showing product title and color.
+                              {%- endcomment -%}
+
+                              title="
+                                {{ sibling.title }}
+                                {% if sibling.metafields.custom.product_color_name != blank %}
+                                  - {{ sibling.metafields.custom.product_color_name | capitalize }}
+                                {% endif %}
+                              "
+
+                              {%- comment -%}
+                                CSS custom properties used to create the
+                                swatch color / gradient.
+                              {%- endcomment -%}
+
+                              style="
+                                --color-1: {{ sibling.metafields.custom.swatch_primary_color.value }};
+                                --color-2: {{ sibling.metafields.custom.swatch_secondary_color.value }};
+                              "
+                            >
+                            </button>
+
+                          {% endif %}
+
+                        {% endunless %}
+
+                      {% endfor %}
+
+                    </div>
+
+                  {% endif %}
+
+
+                {% comment %}
+                  ============================================================
+                  END CUSTOM PRODUCT SWATCH LIST
+                  ============================================================
+                {% endcomment %}            
               {%- when 'title' -%}
                 <div class="product__title" {{ block.shopify_attributes }}>
                   <h1>{{ product.title | escape }}</h1>

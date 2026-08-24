@@ -138,14 +138,14 @@ variant-selects {
   flex-wrap: wrap;
 }
 
-.product-form__input--swatch .swatch-input__input + .swatch-input__label {
+.product-form__input--swatch .swatch-input__input + .swatch-input__label, .product-swatch {
   --swatch-input--size: 3.6rem;
 
   margin: 0.7rem 1.2rem 0.2rem 0;
 }
 
 @media screen and (min-width: 750px) {
-  .product-form__input--swatch .swatch-input__input + .swatch-input__label {
+  .product-form__input--swatch .swatch-input__input + .swatch-input__label,.product-swatch {
     --swatch-input--size: 2.8rem;
   }
 }
