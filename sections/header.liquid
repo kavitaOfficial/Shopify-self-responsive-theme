@@ -611,6 +611,12 @@
       "info": "t:sections.header.settings.enable_customer_avatar.info"
     },
     {
+      "type": "text",
+      "id": "highlight_menu_items",
+      "label": "Highlight menu items",
+      "info": "Enter menu item names separated by commas. Example: Sale, New, Best Sellers"
+    },
+    {
       "type": "header",
       "content": "t:sections.all.spacing"
     },
@@ -650,9 +656,36 @@
     }
   ],
   "blocks": [
-    {
-      "type": "@app"
-    }
-  ]
+  {
+    "type": "mega_menu_item",
+    "name": "Mega menu item",
+    "settings": [
+      {
+        "type": "text",
+        "id": "menu_title",
+        "label": "Menu item title",
+        "info": "Enter the top-level menu item this content belongs to. Example: Men"
+      },
+      {
+        "type": "image_picker",
+        "id": "image",
+        "label": "Mega menu image"
+      },
+      {
+        "type": "text",
+        "id": "image_title",
+        "label": "Image title"
+      },
+      {
+        "type": "url",
+        "id": "image_link",
+        "label": "Image link"
+      }
+    ]
+  },
+  {
+    "type": "@app"
+  }
+]
 }
 {% endschema %}

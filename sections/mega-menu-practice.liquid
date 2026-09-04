@@ -1,0 +1,230 @@
+{% liquid
+  assign selected_menu = section.settings.menu
+%}
+
+{% if selected_menu != blank %}
+
+  <nav
+    class="mega-menu"
+    aria-label="{{ selected_menu.title | escape }}"
+  >
+
+    <ul class="mega-menu__list" role="list">
+
+      {% for link in selected_menu.links %}
+
+        {% liquid
+          assign menu_block = blank
+          assign normalized_link_title = link.title | strip | downcase
+
+          for block in section.blocks
+            assign normalized_block_title = block.settings.title | strip | downcase
+
+            if normalized_link_title == normalized_block_title
+              assign menu_block = block
+              break
+            endif
+          endfor
+        %}
+
+        <li
+          class="
+            mega-menu__item
+            {% if link.links != blank %}mega-menu__item--has-children{% endif %}
+            {% if menu_block != blank %}mega-menu__item--has-mega-menu{% endif %}
+          "
+          {% if menu_block != blank %}
+            {{ menu_block.shopify_attributes }}
+          {% endif %}
+        >
+
+          <a
+            href="{{ link.url }}"
+            class="mega-menu__link"
+            {% if link.links != blank %}
+              aria-haspopup="true"
+            {% endif %}
+          >
+            {{ link.title | escape }}
+
+            {% if link.links != blank %}
+              <span
+                class="mega-menu__arrow"
+                aria-hidden="true"
+              >
+                {{- 'icon-caret.svg' | inline_asset_content -}}
+              </span>
+            {% endif %}
+          </a>
+
+
+          {% if link.links != blank %}
+
+            <div class="mega-menu__panel">
+
+              <div class="mega-menu__panel-inner">
+
+                <div class="mega-menu__columns">
+
+                  {% for child_link in link.links %}
+
+                    <div class="mega-menu__column">
+
+                      <a
+                        href="{{ child_link.url }}"
+                        class="mega-menu__column-title"
+                      >
+                        {{ child_link.title | escape }}
+                      </a>
+
+
+                      {% if child_link.links != blank %}
+
+                        <ul
+                          class="mega-menu__sub-links"
+                          role="list"
+                        >
+
+                          {% for grandchild_link in child_link.links %}
+
+                            <li class="mega-menu__sub-item">
+
+                              <a
+                                href="{{ grandchild_link.url }}"
+                                class="mega-menu__sub-link"
+                              >
+                                {{ grandchild_link.title | escape }}
+                              </a>
+
+                            </li>
+
+                          {% endfor %}
+
+                        </ul>
+
+                      {% endif %}
+
+                    </div>
+
+                  {% endfor %}
+
+                </div>
+
+
+                {% if menu_block != blank and menu_block.settings.image != blank %}
+
+                  <div class="mega-menu__media">
+
+                    {% if menu_block.settings.link != blank %}
+
+                      <a
+                        href="{{ menu_block.settings.link }}"
+                        class="mega-menu__image-link"
+                      >
+
+                    {% endif %}
+
+                      <div class="mega-menu__image">
+
+                        {{
+                          menu_block.settings.image
+                          | image_url: width: 900
+                          | image_tag:
+                            loading: 'lazy',
+                            widths: '400, 600, 750, 900',
+                            sizes: '(min-width: 1200px) 360px, (min-width: 990px) 30vw, 100vw',
+                            alt: menu_block.settings.image.alt
+                          | default: menu_block.settings.title
+                        }}
+
+                      </div>
+
+                      {% if menu_block.settings.title != blank %}
+
+                        <div class="mega-menu__media-content">
+
+                          <span class="mega-menu__media-title">
+                            {{ menu_block.settings.title | escape }}
+                          </span>
+
+                        </div>
+
+                      {% endif %}
+
+                    {% if menu_block.settings.link != blank %}
+
+                      </a>
+
+                    {% endif %}
+
+                  </div>
+
+                {% endif %}
+
+              </div>
+
+            </div>
+
+          {% endif %}
+
+        </li>
+
+      {% endfor %}
+
+    </ul>
+
+  </nav>
+
+{% endif %}
+
+{% schema %}
+
+{
+  "name": "Mega Menu Practice",
+
+  "settings": [
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Select menu"
+    }
+  ],
+
+  "blocks": [
+    {
+      "type": "menu_item",
+
+      "name": "Menu item",
+
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Menu item title",
+          "info": "Must match a top-level menu item. Matching ignores uppercase/lowercase and leading/trailing spaces."
+        },
+
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Mega menu image"
+        },
+
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Image link",
+          "info": "Optional. If empty, the image will not be clickable."
+        }
+      ]
+    }
+  ],
+
+  "presets": [
+    {
+      "name": "Mega Menu Practice"
+    }
+  ]
+}
+
+{% endschema %}

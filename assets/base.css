@@ -3606,3 +3606,11 @@ body{
 .product__media-item[data-active-media="true"] {
   display: block;
 }
+
+.custom-hidden {
+  display: none !important;
+}
+
+.custom-sold-out {
+  text-decoration: line-through;
+}

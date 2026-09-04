@@ -154,10 +154,36 @@ if (!customElements.get('product-info')) {
         return `${url}?${params.join('&')}`;
       }
 
-      updateOptionValues(html) {
+     updateOptionValues(html) {
         const variantSelects = html.querySelector('variant-selects');
+
         if (variantSelects) {
-          HTMLUpdateUtility.viewTransition(this.variantSelectors, variantSelects, this.preProcessHtmlCallbacks);
+          const variants =
+            window.VariantOptionState?.getVariantsFromRoot(html);
+
+          console.log('--- UPDATE OPTION VALUES ---');
+
+          console.log(
+            'INCOMING SELECTED:',
+            Array.from(
+              variantSelects.querySelectorAll(
+                'select option[selected], fieldset input:checked'
+              )
+            ).map((el) => el.value)
+          );
+
+          console.log('INCOMING VARIANTS:', variants);
+
+          window.VariantOptionState?.update(
+            variantSelects,
+            variants
+          );
+
+          HTMLUpdateUtility.viewTransition(
+            this.variantSelectors,
+            variantSelects,
+            this.preProcessHtmlCallbacks
+          );
         }
       }
 
@@ -176,153 +202,6 @@ if (!customElements.get('product-info')) {
           }
 
           this.updateMedia(html, variant?.featured_media?.id);
-          console.log("NEW VARIANT :", variant);
-
-           // ==========================================
-          // CUSTOM: UPDATE IMAGES BY COLOR
-          // ==========================================
-// =========================================================
-    // 4. GET OPTION NAMES
-    // =========================================================
-    //
-    // Example:
-    //
-    // 0 → Color
-    // 1 → Accessory size
-    // 2 → Material
-    //
-    // =========================================================
-
-    const variantInputs =
-      html.querySelectorAll(
-        '.product-form__input[data-option-name]'
-      );
-
-
-    console.log(
-      'VARIANT INPUTS:',
-      variantInputs
-    );
-
-
-    // =========================================================
-    // 5. FIND COLOR OPTION INDEX
-    // =========================================================
-
-    const colorIndex =
-      Array.from(variantInputs).findIndex(
-        (input) => {
-
-          const optionName =
-            input.dataset.optionName
-              ?.trim()
-              .toLowerCase();
-
-          return optionName === 'color';
-
-        }
-      );
-
-
-    console.log(
-      'COLOR INDEX:',
-      colorIndex
-    );
-    // =========================================================
-    // 6. GET SELECTED COLOR
-    // =========================================================
-    //
-    // colorIndex = 0
-    // → variant.option1
-    //
-    // colorIndex = 1
-    // → variant.option2
-    //
-    // colorIndex = 2
-    // → variant.option3
-    //
-    // =========================================================
-
-    let selectedColor = null;
-
-
-    if (colorIndex !== -1) {
-
-      selectedColor =
-        variant[
-          `option${colorIndex + 1}`
-        ]
-          ?.trim()
-          .toLowerCase();
-
-    }
-
-
-    console.log(
-      'SELECTED COLOR:',
-      selectedColor
-    );
-
-    // =========================================================
-    // 8. FILTER PRODUCT IMAGES BY COLOR
-    // =========================================================
-    //
-    // Example:
-    //
-    // data-color="blue"
-    // data-color="white"
-    // data-color="gray"
-    //
-    // If selectedColor = "blue"
-    //
-    // blue  → SHOW
-    // white → HIDE
-    // gray  → HIDE
-    //Green selected
-    //→ no green images
-    //→ show all images
-    // =========================================================
-
-          const mediaItems =
-            this.querySelectorAll(
-              '.product__media-item[data-color]'
-            );
-
-          let matchingMediaCount = 0;
-
-          mediaItems.forEach((mediaItem) => {
-
-            const mediaColor =
-              mediaItem.dataset.color
-                ?.trim()
-                .toLowerCase();
-
-            if (mediaColor === selectedColor) {
-              matchingMediaCount++;
-            }
-
-          });
-
-          mediaItems.forEach((mediaItem) => {
-
-            const mediaColor =
-              mediaItem.dataset.color
-                ?.trim()
-                .toLowerCase();
-
-            const shouldShow =
-              matchingMediaCount === 0 ||
-              mediaColor === selectedColor;
-
-            mediaItem.dataset.activeMedia =
-              shouldShow ? 'true' : 'false';
-
-          });
-
-
-           // ==========================================
-          // END CUSTOM: UPDATE IMAGES BY COLOR
-          // ==========================================
 
           const updateSourceFromDestination = (id, shouldHide = (source) => false) => {
             const source = html.getElementById(`${id}-${this.sectionId}`);
@@ -387,7 +266,6 @@ if (!customElements.get('product-info')) {
       }
 
       updateMedia(html, variantFeaturedMediaId) {
-        console.log("Hy iam running");
         if (!variantFeaturedMediaId) return;
 
         const mediaGallerySource = this.querySelector('media-gallery ul');

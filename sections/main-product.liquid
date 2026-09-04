@@ -3,7 +3,7 @@
 {% assign material_hero_feature = product.metafields.custom.product_material_hero_feature.value %}
 
 
- <script src="{{ 'product-switcher.js' | asset_url }}" defer="defer"></script>
+ {% comment %} <script src="{{ 'product-switcher.js' | asset_url }}" defer="defer"></script> {% endcomment %}
 
 <product-info
   id="MainProduct-{{ section.id }}"
@@ -50,6 +50,8 @@
   <script src="{{ 'product-info.js' | asset_url }}" defer="defer"></script>
   <script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
 
+    {% comment %} <script src="{{ 'variant-combination.js' | asset_url }}" defer="defer"></script> {% endcomment %}
+
    
   {%- if product.quantity_price_breaks_configured? -%}
     <script src="{{ 'show-more.js' | asset_url }}" defer="defer"></script>
@@ -81,6 +83,7 @@
       onload="this.media='all'"
     >
   {%- endif -%}
+
 
   {% assign variant_images = product.images | where: 'attached_to_variant?', true | map: 'src' %}
 {% assign selected_variant = product.selected_or_first_available_variant %}
@@ -750,6 +753,9 @@
 
               {%- when 'variant_picker' -%}
                 {% render 'product-variant-picker', product: product, block: block, product_form_id: product_form_id %}
+                  <script type="application/json" id="ProductVariants-{{ section.id }}">
+                    {{ product.variants | json }}
+                </script>
               {%- when 'buy_buttons' -%}
                 {%- render 'buy-buttons',
                   block: block,
